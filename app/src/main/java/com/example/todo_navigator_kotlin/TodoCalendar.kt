@@ -41,6 +41,8 @@ class TodoCalendar : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_todo_calendar)
 
+        //todoListItems = getTodoListFromFirebase()
+
         todoAdapter = TodoAdapter(mutableListOf()) { selectedTodo ->
             val intent = Intent(this, TodoDetail_Navigator::class.java)
             intent.putExtra("SELECTED_TODO", selectedTodo)

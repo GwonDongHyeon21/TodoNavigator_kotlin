@@ -4,6 +4,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.gms.google-services")
 }
 
 val properties = Properties().apply {
@@ -62,7 +63,5 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.play.services.location)
     implementation(libs.firebase.bom)
-    implementation(libs.firebase.analytics)
-    implementation(libs.firebase.common.ktx)
-    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.database.ktx)
 }

@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import com.example.todo_navigator_kotlin.model.Todo
 
 class TodoAdd : AppCompatActivity() {
@@ -109,6 +108,8 @@ class TodoAdd : AppCompatActivity() {
                     endLocationX,
                     endLocationY
                 )
+                addTodoToFirebase(todo)
+
                 val resultIntent = Intent().apply {
                     putExtra("NEW_TODO", todo)
                 }
