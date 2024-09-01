@@ -99,6 +99,7 @@ class TodoAdd : AppCompatActivity() {
             val endLocation = endLocation.text.toString().ifEmpty { "없음" }
             if (content.isNotEmpty()) {
                 val todo = Todo(
+                    System.currentTimeMillis().toString(),
                     date,
                     content,
                     startLocation,
@@ -106,7 +107,7 @@ class TodoAdd : AppCompatActivity() {
                     startLocationY,
                     endLocation,
                     endLocationX,
-                    endLocationY
+                    endLocationY,
                 )
                 addTodoToFirebase(todo)
 

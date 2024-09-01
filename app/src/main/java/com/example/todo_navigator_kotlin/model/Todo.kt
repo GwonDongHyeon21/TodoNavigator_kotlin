@@ -3,6 +3,7 @@ package com.example.todo_navigator_kotlin.model
 import java.io.Serializable
 
 data class Todo(
+    val unique: String,
     val date: String,
     val content: String,
     val startLocation: String,

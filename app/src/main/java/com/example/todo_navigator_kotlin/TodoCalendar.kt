@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.CalendarView
 import android.widget.ImageButton
 import android.widget.TextView
@@ -18,6 +19,7 @@ import com.example.todo_navigator_kotlin.model.Todo
 class TodoCalendar : AppCompatActivity() {
 
     private lateinit var todoAdapter: TodoAdapter
+    private lateinit var addTodoLauncher: ActivityResultLauncher<Intent>
     private lateinit var selectedDate: String
     private var todoListItems: MutableList<Todo> = mutableListOf()
     private val addTodoButton: ImageButton by lazy {
@@ -35,19 +37,20 @@ class TodoCalendar : AppCompatActivity() {
     private val emptyStateTextView: TextView by lazy {
         findViewById(R.id.emptyStateTextView)
     }
-    private lateinit var addTodoLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_todo_calendar)
 
-        //todoListItems = getTodoListFromFirebase()
+        val getTodoList = intent.getSerializableExtra("TODO_LIST") as? ArrayList<Todo>
+        getTodoList?.let { todoListItems.addAll(it) }
 
         todoAdapter = TodoAdapter(mutableListOf()) { selectedTodo ->
             val intent = Intent(this, TodoDetail_Navigator::class.java)
             intent.putExtra("SELECTED_TODO", selectedTodo)
             startActivity(intent)
         }
+
         todoList.adapter = todoAdapter
         todoList.layoutManager = LinearLayoutManager(this)
 
@@ -117,7 +120,6 @@ class TodoCalendar : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("삭제 확인")
         builder.setMessage("완료된 할 일을 삭제하시겠습니까?")
-
         builder.setPositiveButton("삭제") { _, _ ->
             todoListItems = todoListItems.filter { !it.isDone }.toMutableList()
 
@@ -125,7 +127,8 @@ class TodoCalendar : AppCompatActivity() {
             updateEmptyState()
         }
         builder.setNegativeButton("취소", null)
-
         builder.create().show()
+
+        deleteTodoToFirebase()
     }
 }
