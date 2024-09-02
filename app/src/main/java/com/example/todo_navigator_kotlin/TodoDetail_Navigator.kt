@@ -4,9 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.todo_navigator_kotlin.model.Todo
@@ -54,23 +54,18 @@ class TodoDetail_Navigator : AppCompatActivity() {
             navigatorButton.isEnabled = false
 
         navigatorButton.setOnClickListener {
-            if (endLocation.text.isNotEmpty()) {
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse(
-                        "nmap://route/public?" +
-                                "slat=${startLocationX}&slng=${startLocationY}&sname=${startLocation}&" +
-                                "dlat=${endLocationX}&dlng=${endLocationY}&dname=${endLocation}&"
-                                //+ "appname=${BuildConfig.APPLICATION_ID}"
-                    )
-                }
-
-                if (intent.resolveActivity(packageManager) != null) {
-                    startActivity(intent)
-                } else {
-                    downloadConfirmDialog()
-                }
+            val encodedStartLocation = Uri.encode(selectedTodo?.startLocation ?: "")
+            val encodedEndLocation = Uri.encode(selectedTodo?.endLocation ?: "")
+            val mapUri = "nmap://route/public?" +
+                    "slat=${startLocationY}&slng=${startLocationX}&sname=${encodedStartLocation}&" +
+                    "dlat=${endLocationY}&dlng=${endLocationX}&dname=${encodedEndLocation}&" +
+                    "appname=com.example.todo_navigator_kotlin"
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mapUri))
+            startActivity(intent)
+            if (intent.resolveActivity(packageManager) == null) {
+                startActivity(intent)
             } else {
-                Toast.makeText(this, "유효한 주소를 입력해 주세요.", Toast.LENGTH_SHORT).show()
+                downloadConfirmDialog()
             }
         }
     }

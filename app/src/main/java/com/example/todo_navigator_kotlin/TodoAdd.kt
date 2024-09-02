@@ -1,9 +1,12 @@
 package com.example.todo_navigator_kotlin
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -56,6 +59,15 @@ class TodoAdd : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {}
         })
+        todoContent.setOnEditorActionListener { _, action, _ ->
+            if (action == EditorInfo.IME_ACTION_SEARCH || action == EditorInfo.IME_ACTION_DONE) {
+                (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                    .hideSoftInputFromWindow(todoContent.windowToken, 0)
+                true
+            } else {
+                false
+            }
+        }
 
         maxLengthCheck(todoContent, maxContentLength)
 

@@ -24,6 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:hint="Enter To-Do"
+        android:maxLines="1"
+        android:singleLine="true"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

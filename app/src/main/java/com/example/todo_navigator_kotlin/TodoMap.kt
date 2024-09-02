@@ -91,6 +91,14 @@ class TodoMap : AppCompatActivity(), OnMapReadyCallback {
 
             override fun afterTextChanged(p0: Editable?) {}
         })
+        addressInput.setOnEditorActionListener { _, action, _ ->
+            if (action == EditorInfo.IME_ACTION_SEARCH || action == EditorInfo.IME_ACTION_DONE) {
+                searchButton.performClick()
+                true
+            } else {
+                false
+            }
+        }
 
         searchButton.setOnClickListener {
             val address = addressInput.text.toString()
@@ -102,15 +110,6 @@ class TodoMap : AppCompatActivity(), OnMapReadyCallback {
                 }
             } else {
                 Toast.makeText(this, "주소를 입력해 주세요.", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        addressInput.setOnEditorActionListener { _, action, _ ->
-            if (action == EditorInfo.IME_ACTION_SEARCH || action == EditorInfo.IME_ACTION_DONE) {
-                searchButton.performClick()
-                true
-            } else {
-                false
             }
         }
     }
@@ -178,7 +177,7 @@ class TodoMap : AppCompatActivity(), OnMapReadyCallback {
                         roadAddress = address.getAddressLine(0) ?: "",
                         jibunAddress = address.getAddressLine(1) ?: "",
                         x = address.longitude,
-                        y = address.latitude
+                        y = address.latitude,
                     )
                 }
 

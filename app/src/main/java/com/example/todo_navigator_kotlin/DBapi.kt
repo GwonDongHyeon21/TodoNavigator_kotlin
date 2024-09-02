@@ -1,5 +1,6 @@
 package com.example.todo_navigator_kotlin
 
+import android.util.Log
 import com.example.todo_navigator_kotlin.model.Todo
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -32,6 +33,7 @@ fun getTodoListFromFirebase(callback: (MutableList<Todo>) -> Unit) {
 
 fun addTodoToFirebase(todo: Todo) {
     todoDB.push().setValue(todo)
+    //todo 날짜별로 저장한다면 더 효율적이지 않을까? -> 삭제할 때도 효율적일듯
 }
 
 fun deleteTodoToFirebase(date: String, todoUnique: List<String>) {
