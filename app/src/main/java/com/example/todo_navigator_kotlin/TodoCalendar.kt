@@ -4,10 +4,10 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.CalendarView
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -42,8 +42,9 @@ class TodoCalendar : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_todo_calendar)
 
-        val getTodoList = intent.getSerializableExtra("TODO_LIST") as? ArrayList<Todo>
-        getTodoList?.let { todoListItems.addAll(it) }
+//        val getTodoList = intent.getSerializableExtra("TODO_LIST") as? ArrayList<Todo>
+//        getTodoList?.let { todoListItems.addAll(it) }
+        todoListItems.addAll(intent.getSerializableExtra("TODO_LIST") as ArrayList<Todo>)
 
         todoAdapter = TodoAdapter(mutableListOf()) { selectedTodo ->
             val intent = Intent(this, TodoDetail_Navigator::class.java)
@@ -97,7 +98,15 @@ class TodoCalendar : AppCompatActivity() {
         }
 
         deleteTodoButton.setOnClickListener {
-            deleteConfirmDialog()
+            val filteredTodoList = todoListItems.filter { it.isDone }
+            filteredTodoList.let {
+                if (it.isNotEmpty()) {
+                    deleteConfirmDialog(it)
+                } else {
+                    Toast.makeText(this, "삭제할 할 일을 선택해 주세요.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
         }
     }
 
@@ -116,12 +125,12 @@ class TodoCalendar : AppCompatActivity() {
         }
     }
 
-    private fun deleteConfirmDialog() {
+    private fun deleteConfirmDialog(filteredTodoList: List<Todo>) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("삭제 확인")
-        builder.setMessage("완료된 할 일을 삭제하시겠습니까?")
+        builder.setMessage("완료된 일을 삭제하시겠습니까?")
         builder.setPositiveButton("삭제") { _, _ ->
-            todoListItems = todoListItems.filter { !it.isDone }.toMutableList()
+            todoListItems = todoListItems.filterNot { it in filteredTodoList }.toMutableList()
 
             filterTodosByDate()
             updateEmptyState()
@@ -129,6 +138,7 @@ class TodoCalendar : AppCompatActivity() {
         builder.setNegativeButton("취소", null)
         builder.create().show()
 
-        deleteTodoToFirebase()
+        val uniqueList = filteredTodoList.map { it.unique }
+        deleteTodoToFirebase(selectedDate, uniqueList)
     }
 }

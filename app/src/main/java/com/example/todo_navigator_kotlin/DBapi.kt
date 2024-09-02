@@ -34,10 +34,30 @@ fun addTodoToFirebase(todo: Todo) {
     todoDB.push().setValue(todo)
 }
 
-fun deleteTodoToFirebase(unique: String) {
-    todoDB.orderByChild("unique").equalTo(unique).get().addOnSuccessListener { dataSnapshot ->
+fun deleteTodoToFirebase(date: String, todoUnique: List<String>) {
+    //todo 다 읽고 삭제 -> 다시 다 읽고 삭제 => todos 다 읽어야 하는 비효율
+//    todoUnique.forEach { unique ->
+//        todoDB.orderByChild("unique").equalTo(unique).get().addOnSuccessListener { data ->
+//            data.ref.removeValue()
+//        }.addOnFailureListener { }
+//    }
+    //todo 다 읽어와서 -> todo 하나씩 돌아가며 확인 -> todoUnique에 todo의 unique에 포함시 삭제
+//    todoDB.orderByChild("date").equalTo(date).get().addOnSuccessListener { dataSnapshot ->
+//        for (data in dataSnapshot.children) {
+//            val todoUniqueValue = data.child("unique").getValue(String::class.java)
+//            if (todoUnique.contains(todoUniqueValue)) {
+//                data.ref.removeValue()
+//            }
+//        }
+//    }
+    //todo *한번에 하나의 date에서만 삭제 가능하다는 점 이용 -> 효율성 증가
+    //todo 다 읽고 date 일치 todos 가져와서 -> todo 하나씩 돌아가며 확인 -> todoUnique에 todo의 unique에 포함시 삭제
+    todoDB.orderByChild("date").equalTo(date).get().addOnSuccessListener { dataSnapshot ->
         for (data in dataSnapshot.children) {
-            data.ref.removeValue()
+            val todoUniqueValue = data.child("unique").getValue(String::class.java)
+            if (todoUnique.contains(todoUniqueValue)) {
+                data.ref.removeValue()
+            }
         }
     }
 }
