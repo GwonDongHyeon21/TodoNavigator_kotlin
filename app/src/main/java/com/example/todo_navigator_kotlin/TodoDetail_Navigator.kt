@@ -61,7 +61,6 @@ class TodoDetail_Navigator : AppCompatActivity() {
                     "dlat=${endLocationY}&dlng=${endLocationX}&dname=${encodedEndLocation}&" +
                     "appname=com.example.todo_navigator_kotlin"
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mapUri))
-            startActivity(intent)
             if (intent.resolveActivity(packageManager) == null) {
                 startActivity(intent)
             } else {
