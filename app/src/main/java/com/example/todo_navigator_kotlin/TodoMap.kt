@@ -250,7 +250,7 @@ class TodoMap : AppCompatActivity(), OnMapReadyCallback {
 
         naverMap.moveCamera(
             CameraUpdate.scrollTo(latLng)
-                .animate(CameraAnimation.Easing)
+                .animate(CameraAnimation.Linear, 500)
         )
     }
 }
