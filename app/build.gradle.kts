@@ -10,7 +10,7 @@ plugins {
 val properties = Properties().apply {
     load(FileInputStream(rootProject.file("local.properties")))
 }
-val NAVER_API_CLIENT_ID = properties.getProperty("NAVER_API_CLIENT_ID")
+val NAVER_API_CLIENT_ID = (properties.getProperty("NAVER_API_CLIENT_ID")).replace("\"", "")
 
 android {
     namespace = "com.example.todo_navigator_kotlin"
