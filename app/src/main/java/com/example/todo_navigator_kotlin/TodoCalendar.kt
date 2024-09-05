@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todo_navigator_kotlin.adapter.TodoAdapter
 import com.example.todo_navigator_kotlin.model.Todo
+import com.google.android.material.datepicker.MaterialCalendar
 
 class TodoCalendar : AppCompatActivity() {
 
@@ -42,8 +43,6 @@ class TodoCalendar : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_todo_calendar)
 
-//        val getTodoList = intent.getSerializableExtra("TODO_LIST") as? ArrayList<Todo>
-//        getTodoList?.let { todoListItems.addAll(it) }
         todoListItems.addAll(intent.getSerializableExtra("TODO_LIST") as ArrayList<Todo>)
 
         todoAdapter = TodoAdapter(mutableListOf()) { selectedTodo ->
