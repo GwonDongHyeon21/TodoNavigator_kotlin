@@ -29,6 +29,7 @@
         <activity android:name=".TodoDetail_Navigator" />
         <activity android:name=".TodoMap" />
         <activity android:name=".TodoCalendar" />
+        <activity android:name=".LoginFirebase" />
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"

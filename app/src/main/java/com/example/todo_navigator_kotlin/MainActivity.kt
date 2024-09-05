@@ -13,13 +13,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        getTodoListFromFirebase { todoData ->
-            todoList = todoData
-
-            val intent = Intent(this, TodoCalendar::class.java)
-            intent.putExtra("TODO_LIST", ArrayList(todoList))
-            startActivity(intent)
-            finish()
-        }
+        val intent = Intent(this, LoginFirebase::class.java)
+        startActivity(intent)
+        finish()
     }
 }

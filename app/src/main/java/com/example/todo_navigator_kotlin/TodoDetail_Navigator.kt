@@ -62,9 +62,9 @@ class TodoDetail_Navigator : AppCompatActivity() {
                     "appname=com.example.todo_navigator_kotlin"
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mapUri))
             if (intent.resolveActivity(packageManager) == null) {
-                startActivity(intent)
-            } else {
                 downloadConfirmDialog()
+            } else {
+                startActivity(intent)
             }
         }
     }
