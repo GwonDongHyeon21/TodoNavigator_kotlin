@@ -13,11 +13,11 @@ val properties = Properties().apply {
 val NAVER_API_CLIENT_ID = (properties.getProperty("NAVER_API_CLIENT_ID")).replace("\"", "")
 
 android {
-    namespace = "com.example.todo_navigator_kotlin"
+    namespace = "todo_navigator.example.todo_navigator_kotlin"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.todo_navigator_kotlin"
+        applicationId = "todo_navigator.example.todo_navigator_kotlin"
         minSdk = 30
         targetSdk = 34
         versionCode = 1
