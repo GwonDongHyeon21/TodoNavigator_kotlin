@@ -1,8 +1,8 @@
 package todo_navigator.example.todo_navigator_kotlin
 
-import todo_navigator.example.todo_navigator_kotlin.model.Todo
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import todo_navigator.example.todo_navigator_kotlin.model.Todo
 
 object ValueSingleton {
     var uid: String = ""

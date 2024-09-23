@@ -24,19 +24,29 @@ class LoginFirebase : AppCompatActivity() {
     }
 
     private fun signInAnonymously() {
-        auth.signInAnonymously()
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    ValueSingleton.uid = auth.currentUser?.uid ?: ""
-                    getTodoListFromFirebase { todoData ->
-                        val intent = Intent(this, TodoCalendar::class.java)
-                        intent.putExtra("TODO_LIST", ArrayList(todoData))
-                        startActivity(intent)
-                        finish()
+        if (auth.currentUser == null) {
+            auth.signInAnonymously()
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        ValueSingleton.uid = auth.currentUser?.uid ?: ""
+                        getTodoListFromFirebase { todoData ->
+                            val intent = Intent(this, TodoCalendar::class.java)
+                            intent.putExtra("TODO_LIST", ArrayList(todoData))
+                            startActivity(intent)
+                            finish()
+                        }
+                    } else {
+                        progressBar.visibility = ProgressBar.INVISIBLE
                     }
-                } else {
-                    progressBar.visibility = ProgressBar.INVISIBLE
                 }
+        }else{
+            ValueSingleton.uid = auth.currentUser?.uid ?: ""
+            getTodoListFromFirebase { todoData ->
+                val intent = Intent(this, TodoCalendar::class.java)
+                intent.putExtra("TODO_LIST", ArrayList(todoData))
+                startActivity(intent)
+                finish()
             }
+        }
     }
 }

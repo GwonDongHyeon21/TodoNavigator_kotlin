@@ -1,5 +1,6 @@
 package todo_navigator.example.todo_navigator_kotlin.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,6 +47,7 @@ class TodoAdapter(
         return todos.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateTodos(newTodos: List<Todo>) {
         todos.clear()
         todos.addAll(newTodos)

@@ -6,6 +6,7 @@ import android.location.Geocoder
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -14,8 +15,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import todo_navigator.example.todo_navigator_kotlin.adapter.AddressAdapter
-import todo_navigator.example.todo_navigator_kotlin.api.AddressResponse
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraAnimation
@@ -29,6 +28,8 @@ import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.widget.CompassView
 import com.naver.maps.map.widget.LocationButtonView
 import com.naver.maps.map.widget.ZoomControlView
+import todo_navigator.example.todo_navigator_kotlin.adapter.AddressAdapter
+import todo_navigator.example.todo_navigator_kotlin.api.AddressResponse
 import java.util.Locale
 
 class TodoMap : AppCompatActivity(), OnMapReadyCallback {
@@ -85,7 +86,7 @@ class TodoMap : AppCompatActivity(), OnMapReadyCallback {
                 if (address.isNotEmpty()) {
                     searchAddress(address)
                 } else {
-                    addressList.visibility = android.view.View.GONE
+                    addressList.visibility = View.GONE
                 }
             }
 
@@ -171,7 +172,7 @@ class TodoMap : AppCompatActivity(), OnMapReadyCallback {
         try {
             val addresses = geocoder.getFromLocationName(address, 5)
             if (!addresses.isNullOrEmpty()) {
-                addressList.visibility = android.view.View.VISIBLE
+                addressList.visibility = View.VISIBLE
                 val addressesInfo = addresses.map { address ->
                     AddressResponse.AddressItem(
                         roadAddress = address.getAddressLine(0) ?: "",
@@ -187,11 +188,11 @@ class TodoMap : AppCompatActivity(), OnMapReadyCallback {
                 addressList.adapter = addressAdapter
                 addressCheck = true
             } else {
-                addressList.visibility = android.view.View.GONE
+                addressList.visibility = View.GONE
                 addressCheck = false
             }
         } catch (e: Exception) {
-            addressList.visibility = android.view.View.GONE
+            addressList.visibility = View.GONE
             Toast.makeText(this@TodoMap, "주소 검색에 실패했습니다.", Toast.LENGTH_SHORT).show()
         }
     }
@@ -200,7 +201,7 @@ class TodoMap : AppCompatActivity(), OnMapReadyCallback {
         val latLng = LatLng(selectedAddress.y, selectedAddress.x)
         addMarker(latLng)
 
-        addressList.visibility = android.view.View.GONE
+        addressList.visibility = View.GONE
 
         (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
             .hideSoftInputFromWindow(addressInput.windowToken, 0)
@@ -229,7 +230,7 @@ class TodoMap : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun addressIntent(roadAddress: String, x: String, y: String) {
-        addressChooseButton.visibility = android.view.View.VISIBLE
+        addressChooseButton.visibility = View.VISIBLE
         addressChooseButton.setOnClickListener {
             val intent = Intent(this@TodoMap, TodoAdd::class.java).apply {
                 putExtra("ADDRESS", roadAddress)
