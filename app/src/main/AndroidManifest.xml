@@ -25,15 +25,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TodoAdd" />
-        <activity android:name=".TodoDetail_Navigator" />
-        <activity android:name=".TodoMap" />
-        <activity android:name=".TodoCalendar" />
         <activity android:name=".LoginFirebase" />
+        <activity android:name=".TodoCalendar" />
+        <activity android:name=".TodoAdd" />
+        <activity android:name=".map.NaverMap" />
+        <activity android:name=".map.GoogleMap" />
+        <activity android:name=".TodoDetail" />
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="${NAVER_API_CLIENT_ID}" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${GOOGLE_MAP_API}" />
     </application>
 
 </manifest>

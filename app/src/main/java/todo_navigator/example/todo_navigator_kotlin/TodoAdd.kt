@@ -14,6 +14,8 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import todo_navigator.example.todo_navigator_kotlin.map.GoogleMap
+import todo_navigator.example.todo_navigator_kotlin.map.NaverMap
 import todo_navigator.example.todo_navigator_kotlin.model.Todo
 
 class TodoAdd : AppCompatActivity() {
@@ -95,12 +97,12 @@ class TodoAdd : AppCompatActivity() {
 
         startLocation.setOnClickListener {
             location = "startLocation"
-            val intent = Intent(this, TodoMap::class.java)
+            val intent = Intent(this, GoogleMap::class.java)
             locationLauncher.launch(intent)
         }
         endLocation.setOnClickListener {
             location = "endLocation"
-            val intent = Intent(this, TodoMap::class.java)
+            val intent = Intent(this, GoogleMap::class.java)
             locationLauncher.launch(intent)
         }
 

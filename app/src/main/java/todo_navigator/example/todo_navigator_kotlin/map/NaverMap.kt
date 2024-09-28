@@ -1,4 +1,4 @@
-package todo_navigator.example.todo_navigator_kotlin
+package todo_navigator.example.todo_navigator_kotlin.map
 
 import android.content.Context
 import android.content.Intent
@@ -28,11 +28,13 @@ import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.widget.CompassView
 import com.naver.maps.map.widget.LocationButtonView
 import com.naver.maps.map.widget.ZoomControlView
+import todo_navigator.example.todo_navigator_kotlin.R
+import todo_navigator.example.todo_navigator_kotlin.TodoAdd
 import todo_navigator.example.todo_navigator_kotlin.adapter.AddressAdapter
 import todo_navigator.example.todo_navigator_kotlin.api.AddressResponse
 import java.util.Locale
 
-class TodoMap : AppCompatActivity(), OnMapReadyCallback {
+class NaverMap : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var naverMap: NaverMap
     private lateinit var addressAdapter: AddressAdapter
@@ -67,7 +69,7 @@ class TodoMap : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_map)
+        setContentView(R.layout.activity_naver_map)
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as MapFragment?
             ?: MapFragment.newInstance().also {
@@ -105,9 +107,9 @@ class TodoMap : AppCompatActivity(), OnMapReadyCallback {
             val address = addressInput.text.toString()
             if (address.isNotEmpty()) {
                 if (addressCheck) {
-                    Toast.makeText(this@TodoMap, "주소를 선택하세요.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@NaverMap, "주소를 선택하세요.", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@TodoMap, "검색 결과가 없습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@NaverMap, "검색 결과가 없습니다.", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 Toast.makeText(this, "주소를 입력해 주세요.", Toast.LENGTH_SHORT).show()
@@ -133,7 +135,7 @@ class TodoMap : AppCompatActivity(), OnMapReadyCallback {
         zoomController.map = naverMap
         compassButton.map = naverMap
 
-        locationSource = FusedLocationSource(this@TodoMap, LOCATION_PERMISSION_REQUEST_CODE)
+        locationSource = FusedLocationSource(this@NaverMap, LOCATION_PERMISSION_REQUEST_CODE)
         naverMap.locationSource = locationSource
 
         map.setOnMapClickListener { _, latLng ->
@@ -193,7 +195,7 @@ class TodoMap : AppCompatActivity(), OnMapReadyCallback {
             }
         } catch (e: Exception) {
             addressList.visibility = View.GONE
-            Toast.makeText(this@TodoMap, "주소 검색에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@NaverMap, "주소 검색에 실패했습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -232,7 +234,7 @@ class TodoMap : AppCompatActivity(), OnMapReadyCallback {
     private fun addressIntent(roadAddress: String, x: String, y: String) {
         addressChooseButton.visibility = View.VISIBLE
         addressChooseButton.setOnClickListener {
-            val intent = Intent(this@TodoMap, TodoAdd::class.java).apply {
+            val intent = Intent(this@NaverMap, TodoAdd::class.java).apply {
                 putExtra("ADDRESS", roadAddress)
                 putExtra("COORDINATE_X", x)
                 putExtra("COORDINATE_Y", y)

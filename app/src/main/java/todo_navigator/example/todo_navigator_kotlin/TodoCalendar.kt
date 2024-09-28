@@ -45,7 +45,7 @@ class TodoCalendar : AppCompatActivity() {
         todoListItems.addAll(intent.getSerializableExtra("TODO_LIST") as ArrayList<Todo>)
 
         todoAdapter = TodoAdapter(mutableListOf()) { selectedTodo ->
-            val intent = Intent(this, TodoDetail_Navigator::class.java)
+            val intent = Intent(this, TodoDetail::class.java)
             intent.putExtra("SELECTED_TODO", selectedTodo)
             startActivity(intent)
         }
