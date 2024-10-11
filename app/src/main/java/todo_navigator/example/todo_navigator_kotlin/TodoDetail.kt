@@ -9,22 +9,13 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import todo_navigator.example.todo_navigator_kotlin.databinding.ActivityTodoDetailBinding
 import todo_navigator.example.todo_navigator_kotlin.model.Todo
 
 class TodoDetail : AppCompatActivity() {
 
-    private val todoContent: TextView by lazy {
-        findViewById(R.id.todoContent)
-    }
-    private val startLocation: TextView by lazy {
-        findViewById(R.id.startLocation)
-    }
-    private val endLocation: TextView by lazy {
-        findViewById(R.id.endLocation)
-    }
-    private val navigatorButton: Button by lazy {
-        findViewById(R.id.navigatorButton)
-    }
+    private lateinit var todoDetailBinding: ActivityTodoDetailBinding
+
     private lateinit var startLocationX: String
     private lateinit var startLocationY: String
     private lateinit var endLocationX: String
@@ -32,7 +23,13 @@ class TodoDetail : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_todo_detail)
+        todoDetailBinding = ActivityTodoDetailBinding.inflate(layoutInflater)
+        setContentView(todoDetailBinding.root)
+
+        val todoContent = todoDetailBinding.todoContent
+        val startLocation = todoDetailBinding.startLocation
+        val endLocation = todoDetailBinding.endLocation
+        val navigatorButton = todoDetailBinding.navigatorButton
 
         val selectedTodo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getSerializableExtra("SELECTED_TODO", Todo::class.java)

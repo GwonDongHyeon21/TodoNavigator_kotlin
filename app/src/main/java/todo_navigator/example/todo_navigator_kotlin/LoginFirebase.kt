@@ -5,20 +5,21 @@ import android.os.Bundle
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import todo_navigator.example.todo_navigator_kotlin.databinding.ActivityLoginBinding
 
 class LoginFirebase : AppCompatActivity() {
 
+    private lateinit var loginFirebaseBinding: ActivityLoginBinding
+
     private lateinit var auth: FirebaseAuth
-    private val progressBar: ProgressBar by lazy {
-        findViewById(R.id.progress_bar)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        loginFirebaseBinding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(loginFirebaseBinding.root)
 
         auth = FirebaseAuth.getInstance()
-        progressBar.visibility = ProgressBar.VISIBLE
+        loginFirebaseBinding.progressBar.visibility = ProgressBar.VISIBLE
 
         signInAnonymously()
     }
@@ -36,7 +37,7 @@ class LoginFirebase : AppCompatActivity() {
                             finish()
                         }
                     } else {
-                        progressBar.visibility = ProgressBar.INVISIBLE
+                        loginFirebaseBinding.progressBar.visibility = ProgressBar.INVISIBLE
                     }
                 }
         }else{

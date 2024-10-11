@@ -32,35 +32,17 @@ import todo_navigator.example.todo_navigator_kotlin.R
 import todo_navigator.example.todo_navigator_kotlin.TodoAdd
 import todo_navigator.example.todo_navigator_kotlin.adapter.AddressAdapter
 import todo_navigator.example.todo_navigator_kotlin.api.AddressResponse
+import todo_navigator.example.todo_navigator_kotlin.databinding.ActivityNaverMapBinding
 import java.util.Locale
 
 class NaverMap : AppCompatActivity(), OnMapReadyCallback {
+
+    private lateinit var naverMapBinding: ActivityNaverMapBinding
 
     private lateinit var naverMap: NaverMap
     private lateinit var addressAdapter: AddressAdapter
     private lateinit var locationSource: FusedLocationSource
     private var marker: Marker? = null
-    private val addressInput: EditText by lazy {
-        findViewById(R.id.addressInput)
-    }
-    private val searchButton: Button by lazy {
-        findViewById(R.id.searchButton)
-    }
-    private val addressList: RecyclerView by lazy {
-        findViewById(R.id.addressList)
-    }
-    private val addressChooseButton: FloatingActionButton by lazy {
-        findViewById(R.id.addressChooseButton)
-    }
-    private val currentLocationButton: LocationButtonView by lazy {
-        findViewById(R.id.currentLocationButton)
-    }
-    private val zoomController: ZoomControlView by lazy {
-        findViewById(R.id.mapZoomController)
-    }
-    private val compassButton: CompassView by lazy {
-        findViewById(R.id.compassButton)
-    }
     private var addressCheck = true
 
     companion object {
@@ -69,7 +51,12 @@ class NaverMap : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_naver_map)
+        naverMapBinding = ActivityNaverMapBinding.inflate(layoutInflater)
+        setContentView(naverMapBinding.root)
+
+        val addressInput = naverMapBinding.addressInput
+        val addressList = naverMapBinding.addressList
+        val searchButton = naverMapBinding.searchButton
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as MapFragment?
             ?: MapFragment.newInstance().also {
@@ -131,9 +118,9 @@ class NaverMap : AppCompatActivity(), OnMapReadyCallback {
             isCompassEnabled = false
         }
 
-        currentLocationButton.map = naverMap
-        zoomController.map = naverMap
-        compassButton.map = naverMap
+        naverMapBinding.currentLocationButton.map = naverMap
+        naverMapBinding.mapZoomController.map = naverMap
+        naverMapBinding.compassButton.map = naverMap
 
         locationSource = FusedLocationSource(this@NaverMap, LOCATION_PERMISSION_REQUEST_CODE)
         naverMap.locationSource = locationSource
@@ -170,6 +157,7 @@ class NaverMap : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun searchAddress(address: String) {
+        val addressList = naverMapBinding.addressList
         val geocoder = Geocoder(this, Locale.getDefault())
         try {
             val addresses = geocoder.getFromLocationName(address, 5)
@@ -203,10 +191,10 @@ class NaverMap : AppCompatActivity(), OnMapReadyCallback {
         val latLng = LatLng(selectedAddress.y, selectedAddress.x)
         addMarker(latLng)
 
-        addressList.visibility = View.GONE
+        naverMapBinding.addressList.visibility = View.GONE
 
         (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-            .hideSoftInputFromWindow(addressInput.windowToken, 0)
+            .hideSoftInputFromWindow(naverMapBinding.addressInput.windowToken, 0)
 
         addressIntent(
             selectedAddress.roadAddress,
@@ -232,8 +220,8 @@ class NaverMap : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun addressIntent(roadAddress: String, x: String, y: String) {
-        addressChooseButton.visibility = View.VISIBLE
-        addressChooseButton.setOnClickListener {
+        naverMapBinding.addressChooseButton.visibility = View.VISIBLE
+        naverMapBinding.addressChooseButton.setOnClickListener {
             val intent = Intent(this@NaverMap, TodoAdd::class.java).apply {
                 putExtra("ADDRESS", roadAddress)
                 putExtra("COORDINATE_X", x)

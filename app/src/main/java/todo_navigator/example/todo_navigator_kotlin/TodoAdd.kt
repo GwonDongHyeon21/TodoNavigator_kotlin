@@ -14,27 +14,15 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import todo_navigator.example.todo_navigator_kotlin.databinding.ActivityTodoAddBinding
 import todo_navigator.example.todo_navigator_kotlin.map.GoogleMap
 import todo_navigator.example.todo_navigator_kotlin.map.NaverMap
 import todo_navigator.example.todo_navigator_kotlin.model.Todo
 
 class TodoAdd : AppCompatActivity() {
 
-    private val calendarDate: TextView by lazy {
-        findViewById(R.id.todoCalendarDate)
-    }
-    private val todoContent: EditText by lazy {
-        findViewById(R.id.todoContent)
-    }
-    private val startLocation: TextView by lazy {
-        findViewById(R.id.startLocation)
-    }
-    private val endLocation: TextView by lazy {
-        findViewById(R.id.endLocation)
-    }
-    private val addTodoButton: Button by lazy {
-        findViewById(R.id.addTodoButton)
-    }
+    private lateinit var todoAddBinding: ActivityTodoAddBinding
+
     private lateinit var locationLauncher: ActivityResultLauncher<Intent>
     private val maxContentLength: Int = 20
     private lateinit var location: String
@@ -45,7 +33,14 @@ class TodoAdd : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_todo_add)
+        todoAddBinding = ActivityTodoAddBinding.inflate(layoutInflater)
+        setContentView(todoAddBinding.root)
+
+        val calendarDate = todoAddBinding.todoCalendarDate
+        val todoContent = todoAddBinding.todoContent
+        val startLocation = todoAddBinding.startLocation
+        val endLocation = todoAddBinding.endLocation
+        val addTodoButton = todoAddBinding.addTodoButton
 
         val selectedDate = intent.getStringExtra("SELECTED_DATE")
 
@@ -151,8 +146,8 @@ class TodoAdd : AppCompatActivity() {
                         "To-do는 ${maxLength}자를 초과할 수 없습니다.",
                         Toast.LENGTH_SHORT
                     ).show()
-                    todoContent.setText(s.substring(0, maxContentLength))
-                    todoContent.setSelection(maxContentLength)
+                    todoAddBinding.todoContent.setText(s.substring(0, maxContentLength))
+                    todoAddBinding.todoContent.setSelection(maxContentLength)
                 }
             }
 

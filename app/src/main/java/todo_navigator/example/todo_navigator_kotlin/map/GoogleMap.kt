@@ -20,25 +20,25 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import todo_navigator.example.todo_navigator_kotlin.BuildConfig
 import todo_navigator.example.todo_navigator_kotlin.R
 import todo_navigator.example.todo_navigator_kotlin.TodoAdd
+import todo_navigator.example.todo_navigator_kotlin.databinding.ActivityGoogleMapBinding
 import java.util.Locale
 
 class GoogleMap : AppCompatActivity(), OnMapReadyCallback {
 
+    private lateinit var googleMapBinding: ActivityGoogleMapBinding
+
     private lateinit var map: GoogleMap
     private lateinit var placesClient: PlacesClient
     private var marker: Marker? = null
-    private val addressChooseButton: FloatingActionButton by lazy {
-        findViewById(R.id.addressChooseButton)
-    }
     private val defaultLocation = LatLng(37.5665, 126.9780)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_google_map)
+        googleMapBinding = ActivityGoogleMapBinding.inflate(layoutInflater)
+        setContentView(googleMapBinding.root)
 
         Places.initialize(applicationContext, BuildConfig.GOOGLE_MAP_API)
         placesClient = Places.createClient(this)
@@ -112,8 +112,8 @@ class GoogleMap : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun addressIntent(roadAddress: String, x: String, y: String) {
-        addressChooseButton.visibility = View.VISIBLE
-        addressChooseButton.setOnClickListener {
+        googleMapBinding.addressChooseButton.visibility = View.VISIBLE
+        googleMapBinding.addressChooseButton.setOnClickListener {
             val intent = Intent(this@GoogleMap, TodoAdd::class.java).apply {
                 putExtra("ADDRESS", roadAddress)
                 putExtra("COORDINATE_X", x)

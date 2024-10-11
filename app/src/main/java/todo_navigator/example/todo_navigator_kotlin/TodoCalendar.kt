@@ -14,33 +14,22 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import todo_navigator.example.todo_navigator_kotlin.adapter.TodoAdapter
+import todo_navigator.example.todo_navigator_kotlin.databinding.ActivityTodoCalendarBinding
 import todo_navigator.example.todo_navigator_kotlin.model.Todo
 
 class TodoCalendar : AppCompatActivity() {
+
+    private lateinit var todoCalendarBinding: ActivityTodoCalendarBinding
 
     private lateinit var todoAdapter: TodoAdapter
     private lateinit var addTodoLauncher: ActivityResultLauncher<Intent>
     private lateinit var selectedDate: String
     private var todoListItems: MutableList<Todo> = mutableListOf()
-    private val addTodoButton: ImageButton by lazy {
-        findViewById(R.id.addTodoButton)
-    }
-    private val deleteTodoButton: ImageButton by lazy {
-        findViewById(R.id.deleteTodoButton)
-    }
-    private val calendarView: CalendarView by lazy {
-        findViewById(R.id.todoCalendarView)
-    }
-    private val todoList: RecyclerView by lazy {
-        findViewById(R.id.todoList)
-    }
-    private val emptyStateTextView: TextView by lazy {
-        findViewById(R.id.emptyStateTextView)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_todo_calendar)
+        todoCalendarBinding = ActivityTodoCalendarBinding.inflate(layoutInflater)
+        setContentView(todoCalendarBinding.root)
 
         todoListItems.addAll(intent.getSerializableExtra("TODO_LIST") as ArrayList<Todo>)
 
@@ -50,11 +39,11 @@ class TodoCalendar : AppCompatActivity() {
             startActivity(intent)
         }
 
-        todoList.adapter = todoAdapter
-        todoList.layoutManager = LinearLayoutManager(this)
+        todoCalendarBinding.todoList.adapter = todoAdapter
+        todoCalendarBinding.todoList.layoutManager = LinearLayoutManager(this)
 
         val calendar = java.util.Calendar.getInstance().apply {
-            timeInMillis = calendarView.date
+            timeInMillis = todoCalendarBinding.todoCalendarView.date
         }
         val formattedMonth = String.format("%02d", calendar.get(java.util.Calendar.MONTH) + 1)
         val formattedDay = String.format("%02d", calendar.get(java.util.Calendar.DAY_OF_MONTH))
@@ -64,7 +53,7 @@ class TodoCalendar : AppCompatActivity() {
         filterTodosByDate()
         updateEmptyState()
 
-        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+        todoCalendarBinding.todoCalendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val formattedMonth = String.format("%02d", month + 1)
             val formattedDay = String.format("%02d", dayOfMonth)
             selectedDate = "${year}년 ${formattedMonth}월 ${formattedDay}일"
@@ -89,13 +78,13 @@ class TodoCalendar : AppCompatActivity() {
                 }
             }
 
-        addTodoButton.setOnClickListener {
+        todoCalendarBinding.addTodoButton.setOnClickListener {
             val intent = Intent(this, TodoAdd::class.java)
             intent.putExtra("SELECTED_DATE", selectedDate)
             addTodoLauncher.launch(intent)
         }
 
-        deleteTodoButton.setOnClickListener {
+        todoCalendarBinding.deleteTodoButton.setOnClickListener {
             val filteredTodoList = todoListItems.filter { it.isDone }
             filteredTodoList.let {
                 if (it.isNotEmpty()) {
@@ -115,11 +104,11 @@ class TodoCalendar : AppCompatActivity() {
 
     private fun updateEmptyState() {
         if (todoAdapter.itemCount == 0) {
-            emptyStateTextView.visibility = TextView.VISIBLE
-            todoList.visibility = RecyclerView.GONE
+            todoCalendarBinding.emptyStateTextView.visibility = TextView.VISIBLE
+            todoCalendarBinding.todoList.visibility = RecyclerView.GONE
         } else {
-            emptyStateTextView.visibility = TextView.GONE
-            todoList.visibility = RecyclerView.VISIBLE
+            todoCalendarBinding.emptyStateTextView.visibility = TextView.GONE
+            todoCalendarBinding.todoList.visibility = RecyclerView.VISIBLE
         }
     }
 
