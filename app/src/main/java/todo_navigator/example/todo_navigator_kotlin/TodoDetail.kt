@@ -5,8 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import todo_navigator.example.todo_navigator_kotlin.databinding.ActivityTodoDetailBinding
@@ -74,7 +72,7 @@ class TodoDetail : AppCompatActivity() {
                     "&ep=${endLocationY},${endLocationX}"
 
             val options = arrayOf("네이버 지도", "구글 지도", "카카오 지도")
-            val builder = android.app.AlertDialog.Builder(this)
+            val builder = AlertDialog.Builder(this)
             builder.setTitle("길찾기 앱 선택")
                 .setItems(options) { _, which ->
                     when (which) {
